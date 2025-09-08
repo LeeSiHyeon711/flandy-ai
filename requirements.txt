@@ -1,0 +1,51 @@
+# Plandy AI Agent System Dependencies
+
+# Core libraries
+typing-extensions>=4.0.0
+pydantic>=2.0.0
+
+# LangGraph and LangChain (AI Agent Framework)
+langgraph>=0.0.40
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-openai>=0.0.5
+
+# Date/Time processing
+python-dateutil>=2.8.2
+
+# Data processing (optional)
+pandas>=1.5.0
+numpy>=1.21.0
+
+# Web framework (optional)
+fastapi>=0.95.0
+uvicorn>=0.20.0
+
+# Database (optional)
+sqlalchemy>=1.4.0
+alembic>=1.8.0
+pymysql>=1.0.0
+pytz>=2023.3
+
+# Vector database (optional)
+chromadb>=0.4.0
+
+# Web search (optional)
+tavily-python>=0.3.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.0.0
+
+# Code quality
+black>=22.0.0
+flake8>=5.0.0
+mypy>=1.0.0
+
+# Documentation
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.0.0
