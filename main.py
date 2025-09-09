@@ -263,13 +263,46 @@ class PlandyAISystem:
                 final_state = node_result
             
             
+            # AI 응답 수집 (모든 노드의 응답을 종합)
+            ai_response = ""
+            messages = final_state.get("messages", [])
+            
+            # final_state에서 직접 ai_response가 있으면 사용 (가장 우선)
+            if final_state.get("ai_response"):
+                ai_response = final_state.get("ai_response")
+            
+            # ai_response가 없으면 마지막 assistant 메시지에서 추출
+            if not ai_response:
+                for message in reversed(messages):
+                    if message.get("role") == "assistant" and message.get("content"):
+                        # 단순한 시스템 메시지가 아닌 실제 응답인지 확인
+                        content = message.get("content", "")
+                        if not content.startswith("[") or "완료" not in content:
+                            ai_response = content
+                            break
+                        elif len(content) > 100:  # 긴 응답이면 사용
+                            ai_response = content
+                            break
+            
+            # 여전히 응답이 없으면 모든 assistant 메시지를 합침
+            if not ai_response:
+                assistant_messages = []
+                for message in messages:
+                    if message.get("role") == "assistant" and message.get("content"):
+                        content = message.get("content", "")
+                        if len(content) > 50:  # 의미있는 응답만
+                            assistant_messages.append(content)
+                
+                if assistant_messages:
+                    ai_response = "\n\n".join(assistant_messages)
+            
             # 결과 정리
             result = {
                 "status": "success",
                 "user_input": user_input,
-                "ai_response": final_state.get("ai_response", ""),
+                "ai_response": ai_response,
                 "system_status": final_state.get("system_status", "completed"),
-                "messages": final_state.get("messages", []),
+                "messages": messages,
                 "recommendations": final_state.get("recommendations", []),
                 "session_id": final_state.get("session_id", ""),
                 "processed_at": datetime.now().isoformat()

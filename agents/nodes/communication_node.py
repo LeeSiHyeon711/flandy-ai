@@ -249,7 +249,7 @@ async def generate_schedule_response(user_input: str, context: Dict[str, Any], s
             model="gpt-4o-mini",
             api_key=os.getenv("OPENAI_API_KEY"),
             temperature=0.7,
-            streaming=True  # 진짜 streaming 활성화
+            streaming=True  # 스트림 처리 활성화
         )
         
         # 이전 대화 내용 가져오기
@@ -348,7 +348,7 @@ async def generate_general_response(user_input: str, context: Dict[str, Any], st
             model="gpt-4o-mini",
             api_key=os.getenv("OPENAI_API_KEY"),
             temperature=0.7,
-            streaming=True  # 진짜 streaming 활성화
+            streaming=True  # 스트림 처리 활성화
         )
         
         # 이전 대화 내용 가져오기

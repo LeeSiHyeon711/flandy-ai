@@ -1,0 +1,28 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	supervisor(supervisor)
+	health_agent(health_agent)
+	plan_agent(plan_agent)
+	data_agent(data_agent)
+	worklife_balance_agent(worklife_balance_agent)
+	communication_agent(communication_agent)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> supervisor;
+	data_agent --> worklife_balance_agent;
+	health_agent --> plan_agent;
+	plan_agent --> worklife_balance_agent;
+	supervisor -.-> communication_agent;
+	supervisor -.-> data_agent;
+	supervisor -.-> health_agent;
+	supervisor -.-> plan_agent;
+	supervisor -.-> worklife_balance_agent;
+	worklife_balance_agent --> communication_agent;
+	communication_agent --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

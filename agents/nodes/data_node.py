@@ -188,7 +188,7 @@ async def generate_data_recommendation(data_analysis: Dict[str, Any], state: Sta
             model="gpt-4o-mini",
             api_key=os.getenv("OPENAI_API_KEY"),
             temperature=0.7,
-            streaming=True  # 스트림 출력 활성화
+            streaming=False  # API에서 스트림 처리하므로 비활성화
         )
         
         prompt = f"""
@@ -209,19 +209,9 @@ async def generate_data_recommendation(data_analysis: Dict[str, Any], state: Sta
         이 정보를 바탕으로 구체적이고 실행 가능한 생산성 개선 방안을 제시해주세요.
         """
         
-        # 스트림 출력으로 응답 생성
-        full_response = ""
-        print("AI 응답: ", end="", flush=True)
-        
-        import time
-        async for chunk in llm.astream(prompt):
-            if hasattr(chunk, 'content') and chunk.content:
-                print(chunk.content, end="", flush=True)
-                full_response += chunk.content
-                time.sleep(0.02)  # 타이핑 효과
-        
-        print()  # 줄바꿈
-        return full_response
+        # 일반 응답 생성 (API에서 스트림 처리)
+        response = await llm.ainvoke(prompt)
+        return response.content
     except Exception as e:
         # 폴백: 기본 추천
         productivity_trend = data_analysis["trends"]["productivity_trend"]

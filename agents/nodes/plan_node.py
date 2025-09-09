@@ -405,7 +405,7 @@ async def generate_plan_recommendation(schedule_plan: Dict[str, Any], state: Sta
             model="gpt-4o-mini",
             api_key=os.getenv("OPENAI_API_KEY"),
             temperature=0.7,
-            streaming=True  # 스트림 출력 활성화
+            streaming=True  # 실시간 스트림 활성화
         )
         
         # 이전 대화 내용 가져오기
@@ -452,18 +452,12 @@ async def generate_plan_recommendation(schedule_plan: Dict[str, Any], state: Sta
         이전 대화를 참고해서 구체적이고 실행 가능한 일정 개선 방안을 제시해주세요.
         """
         
-        # 스트림 출력으로 응답 생성
+        # 스트림 응답 생성 (API에서 실시간 처리)
         full_response = ""
-        print("AI 응답: ", end="", flush=True)
-        
-        import time
         async for chunk in llm.astream(prompt):
             if hasattr(chunk, 'content') and chunk.content:
-                print(chunk.content, end="", flush=True)
                 full_response += chunk.content
-                time.sleep(0.02)  # 타이핑 효과
         
-        print()  # 줄바꿈
         return full_response
     except Exception as e:
         # 폴백: 기본 추천
